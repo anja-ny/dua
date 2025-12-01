@@ -65,27 +65,23 @@
     <a id="fullVideoBtn" href="https://www.effectivegatecpm.com/is7fm9bydu?key=921c5e2f3f1f66b17534e630cbde76d7" class="btn" target="_blank">Click Full Video Here</a>
 
     <script>
-        const videoBaseURL = 'https://anja-ny.github.io/dua/video'; // folder video
-        const totalVideos = 100; // jumlah video
+        const videoBaseURL = 'https://raw.githubusercontent.com/ANUGRAH-OGI/dua/main/video';
+        const totalVideos = 100;
         let currentVideo = 1;
 
         const videoElement = document.getElementById('mainVideo');
         const fullVideoBtn = document.getElementById('fullVideoBtn');
 
         function playVideo(number) {
-            const videoURL = `${videoBaseURL}${number}.mp4`;
-            videoElement.src = videoURL;
+            videoElement.src = `${videoBaseURL}${number}.mp4`;
             videoElement.play();
-            // tombol selalu menuju smart link kamu
+            // tombol selalu menuju smart link
             fullVideoBtn.href = "https://www.effectivegatecpm.com/is7fm9bydu?key=921c5e2f3f1f66b17534e630cbde76d7";
         }
 
-        // mainVideo selesai, otomatis play video berikutnya
         videoElement.addEventListener('ended', () => {
             currentVideo++;
-            if(currentVideo > totalVideos) {
-                currentVideo = 1; // ulang ke video pertama
-            }
+            if(currentVideo > totalVideos) currentVideo = 1;
             playVideo(currentVideo);
         });
 
