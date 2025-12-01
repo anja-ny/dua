@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landing Page</title>
-
+    <title>Landing Page Ringan</title>
     <style>
         body {
             background: #111;
@@ -62,12 +61,11 @@
         <script async="async" data-cfasync="false" src="//pl28164523.effectivegatecpm.com/094b719a09cdaf8f4ba6b0d948d88f72/invoke.js"></script>
         <div id="container-094b719a09cdaf8f4ba6b0d948d88f72"></div>
     </div>
-    <!-- ================================= -->
 
     <!-- VIDEO PLAYER -->
     <div class="video-box">
-        <video id="mainVideo" controls autoplay>
-            <source src="video1.mp4" type="video/mp4">
+        <video id="mainVideo" controls autoplay muted>
+            <source src="" type="video/mp4">
         </video>
     </div>
 
@@ -77,6 +75,28 @@
     </a>
 
 </div>
+
+<script>
+    const totalVideos = 100; // jumlah total video
+    let currentIndex = 1; // mulai dari video1.mp4
+    const mainVideo = document.getElementById("mainVideo");
+
+    // fungsi untuk set video saat ini
+    function setVideo(index) {
+        mainVideo.src = `https://anja-ny.github.io/dua/video${index}.mp4`;
+        mainVideo.play();
+    }
+
+    // autoplay video pertama
+    setVideo(currentIndex);
+
+    // otomatis lanjut ke video berikutnya saat video selesai
+    mainVideo.addEventListener('ended', () => {
+        currentIndex++;
+        if(currentIndex > totalVideos) currentIndex = 1; // loop kembali ke video pertama
+        setVideo(currentIndex);
+    });
+</script>
 
 </body>
 </html>
