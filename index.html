@@ -1,1 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page</title>
+
+    <style>
+        body {
+            background: #111;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            color: #fff;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin: auto;
+            padding-top: 20px;
+        }
+
+        .ads-box {
+            margin-bottom: 20px;
+        }
+
+        .video-box {
+            margin-bottom: 20px;
+        }
+
+        video {
+            width: 95%;
+            border-radius: 10px;
+        }
+
+        .btn-list {
+            margin-top: 20px;
+        }
+
+        .btn-list button {
+            background: #ff0040;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            color: #fff;
+            margin: 6px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .btn-list button:hover {
+            background: #ff2a5f;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!-- ========== IKLAN ADSTERRA ========== -->
+    <div class="ads-box">
+        <!-- Masukkan kode Adsterra di sini -->
+        <script type="text/javascript">
+            atOptions = {
+                'key' : 'YOUR_AD_KEY',
+                'format' : 'banner',
+                'height' : 250,
+                'width' : 300,
+                'params' : {}
+            };
+        </script>
+        <script type="text/javascript" src="https://www.topcreativeformat.com/ads.js"></script>
+    </div>
+    <!-- ==================================== -->
+
+    <!-- VIDEO PLAYER -->
+    <div class="video-box">
+        <video id="mainVideo" controls autoplay>
+            <source src="video1.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <!-- TOMBOL GANTI VIDEO -->
+    <div class="btn-list">
+        <button onclick="changeVideo('video1.mp4')">Video 1</button>
+        <button onclick="changeVideo('video2.mp4')">Video 2</button>
+        <button onclick="changeVideo('video3.mp4')">Video 3</button>
+    </div>
+
+</div>
+
+<script>
+    function changeVideo(src) {
+        let video = document.getElementById('mainVideo');
+        video.src = src;
+        video.play();
+    }
+</script>
+
+</body>
+</html>
 
