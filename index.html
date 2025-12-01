@@ -35,22 +35,18 @@
             border-radius: 10px;
         }
 
-        .btn-list {
-            margin-top: 20px;
-        }
-
-        .btn-list button {
+        .btn-next {
             background: #ff0040;
             border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
+            padding: 14px 25px;
+            border-radius: 10px;
             color: #fff;
-            margin: 6px;
-            font-size: 15px;
+            font-size: 17px;
             cursor: pointer;
+            margin-top: 15px;
         }
 
-        .btn-list button:hover {
+        .btn-next:hover {
             background: #ff2a5f;
         }
     </style>
@@ -59,21 +55,12 @@
 
 <div class="container">
 
-    <!-- ========== IKLAN ADSTERRA ========== -->
+    <!-- ========== IKLAN ANDA ========== -->
     <div class="ads-box">
-        <!-- Masukkan kode Adsterra di sini -->
-        <script type="text/javascript">
-            atOptions = {
-                'key' : 'YOUR_AD_KEY',
-                'format' : 'banner',
-                'height' : 250,
-                'width' : 300,
-                'params' : {}
-            };
-        </script>
-        <script type="text/javascript" src="https://www.topcreativeformat.com/ads.js"></script>
+        <script async="async" data-cfasync="false" src="//pl28164523.effectivegatecpm.com/094b719a09cdaf8f4ba6b0d948d88f72/invoke.js"></script>
+        <div id="container-094b719a09cdaf8f4ba6b0d948d88f72"></div>
     </div>
-    <!-- ==================================== -->
+    <!-- ================================= -->
 
     <!-- VIDEO PLAYER -->
     <div class="video-box">
@@ -82,23 +69,26 @@
         </video>
     </div>
 
-    <!-- TOMBOL GANTI VIDEO -->
-    <div class="btn-list">
-        <button onclick="changeVideo('video1.mp4')">Video 1</button>
-        <button onclick="changeVideo('video2.mp4')">Video 2</button>
-        <button onclick="changeVideo('video3.mp4')">Video 3</button>
-    </div>
+    <!-- TOMBOL NEXT VIDEO -->
+    <button class="btn-next" onclick="nextVideo()">Next Video Selanjutnya</button>
 
 </div>
 
 <script>
-    function changeVideo(src) {
-        let video = document.getElementById('mainVideo');
-        video.src = src;
+    const videos = ["video1.mp4", "video2.mp4", "video3.mp4", "video4.mp4"];
+    let index = 0;
+
+    function nextVideo() {
+        index++;
+        if (index >= videos.length) {
+            index = 0;  // kembali ke video pertama
+        }
+
+        let video = document.getElementById("mainVideo");
+        video.src = videos[index];
         video.play();
     }
 </script>
 
 </body>
 </html>
-
