@@ -134,6 +134,15 @@
             width: 100%;
         }
         
+        .video-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-size: 1.2rem;
+        }
+        
         @media (max-width: 768px) {
             .video-player-element {
                 height: 350px;
@@ -256,32 +265,72 @@
         // Fungsi untuk memuat video berdasarkan ID
         function loadVideo(videoId) {
             const videoPlayer = document.getElementById('videoPlayer');
-            const videoIndex = videoId - 1; // Karena array dimulai dari 0
+            const videoIndex = videoId - 1;
+            
+            // Tampilkan loading
+            videoPlayer.innerHTML = '<div class="video-loading">Memuat video...</div>';
             
             if (videoIndex >= 0 && videoIndex < videoData.length) {
                 const video = videoData[videoIndex];
                 
-                // Buat elemen video
-                videoPlayer.innerHTML = `
-                    <video controls autoplay style="width:100%; height:100%;">
-                        <source src="${video.videoUrl}" type="video/mp4">
-                        Browser Anda tidak mendukung tag video.
-                    </video>
-                `;
+                // Buat elemen video dengan autoplay
+                const videoElement = document.createElement('video');
+                videoElement.setAttribute('controls', '');
+                videoElement.setAttribute('autoplay', '');
+                videoElement.setAttribute('muted', ''); // Muted untuk memungkinkan autoplay
+                videoElement.setAttribute('playsinline', ''); // Untuk autoplay di iOS
+                videoElement.style.width = '100%';
+                videoElement.style.height = '100%';
+                videoElement.style.objectFit = 'cover';
+                
+                // Tambahkan event listener untuk autoplay
+                videoElement.addEventListener('loadeddata', function() {
+                    console.log(`Video ${videoId} dimuat, mencoba autoplay...`);
+                    
+                    // Coba play video
+                    const playPromise = videoElement.play();
+                    
+                    if (playPromise !== undefined) {
+                        playPromise.then(() => {
+                            console.log(`Video ${videoId} berhasil di-autoplay`);
+                        }).catch(error => {
+                            console.log(`Autoplay gagal untuk video ${videoId}:`, error);
+                            
+                            // Coba unmute dan play lagi (butuh interaksi user)
+                            // Tapi kita akan tetap mute untuk autoplay
+                            videoElement.muted = true;
+                            videoElement.play().catch(e => {
+                                console.log('Masih gagal autoplay:', e);
+                            });
+                        });
+                    }
+                });
+                
+                // Tambahkan source
+                const sourceElement = document.createElement('source');
+                sourceElement.src = video.videoUrl;
+                sourceElement.type = 'video/mp4';
+                
+                videoElement.appendChild(sourceElement);
+                videoElement.innerHTML += 'Browser Anda tidak mendukung tag video.';
+                
+                // Kosongkan dan tambahkan video
+                videoPlayer.innerHTML = '';
+                videoPlayer.appendChild(videoElement);
                 
                 // Update judul halaman
                 document.title = `Video ${videoId}`;
                 
                 console.log(`Video ${videoId} dimuat: ${video.videoUrl}`);
                 
-                // Iklan tidak perlu dimuat ulang karena sama untuk semua video
-                // Tapi kita akan tetap update untuk konsistensi
+                // Update iklan dan tombol
                 document.getElementById('adContent').innerHTML = video.adCode1;
                 document.getElementById('nativeAdContent').innerHTML = video.adCode2;
                 document.querySelector('.smartlink-btn').href = video.smartlink;
                 
                 // Muat ulang skrip iklan
                 reloadAdScripts();
+                
             } else {
                 // Jika video tidak ditemukan, tampilkan placeholder
                 videoPlayer.innerHTML = `<div class="video-placeholder">VIDEO ${videoId}</div>`;
@@ -331,7 +380,7 @@
                 loadScript('//pl28164523.effectivegatecpm.com/094b719a09cdaf8f4ba6b0d948d88f72/invoke.js', true, true)
                     .then(() => console.log('Iklan native banner dimuat ulang'))
                     .catch(err => console.error('Gagal memuat iklan native banner:', err));
-            }, 300); // Jeda sedikit lebih lama untuk memastikan DOM siap
+            }, 300);
         }
         
         // Fungsi untuk update URL tanpa reload halaman
@@ -345,7 +394,7 @@
             // Dapatkan video ID dari URL
             const initialVideoId = getVideoIdFromURL();
             
-            // Muat video
+            // Muat video pertama dengan autoplay
             loadVideo(initialVideoId);
             
             // Update URL
@@ -369,7 +418,6 @@
                     const newVideoId = currentVideoId - 1;
                     updateURL(newVideoId);
                     loadVideo(newVideoId);
-                    // Scroll ke atas halaman
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
                 
@@ -378,7 +426,6 @@
                     const newVideoId = currentVideoId + 1;
                     updateURL(newVideoId);
                     loadVideo(newVideoId);
-                    // Scroll ke atas halaman
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
                 
@@ -387,7 +434,6 @@
                     const num = parseInt(e.key);
                     updateURL(num);
                     loadVideo(num);
-                    // Scroll ke atas halaman
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
                 
@@ -403,7 +449,6 @@
                     
                     updateURL(newVideoId);
                     loadVideo(newVideoId);
-                    // Scroll ke atas halaman
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
             });
@@ -412,6 +457,7 @@
             console.log(`=== VIDEO STREAMING ===`);
             console.log(`Video yang ditampilkan: ${initialVideoId}`);
             console.log(`URL video: ${videoData[initialVideoId - 1].videoUrl}`);
+            console.log(`Fitur: Video autoplay aktif`);
             console.log(`Iklan: 2 jenis iklan (atas dan bawah video)`);
             console.log(`Tombol: Smartlink ke halaman tujuan`);
             console.log(`Navigasi: Gunakan panah kiri/kanan untuk video sebelumnya/selanjutnya`);
