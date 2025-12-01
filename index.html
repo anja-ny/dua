@@ -1,615 +1,366 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landing Page 100 Video</title>
+    <title>Video Streaming - 50 Video Pilihan</title>
     <style>
         * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background-color: #111;
-            color: #fff;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            overflow-x: hidden;
+            background-color: #0f0f1e;
+            color: #f0f0f0;
+            line-height: 1.6;
         }
-
-        .header {
-            width: 100%;
-            background: linear-gradient(to right, #222, #333);
-            padding: 15px 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
-
-        .ad-container {
-            width: 100%;
-            max-width: 728px;
+        
+        .container {
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 10px;
-            background-color: #222;
-            border-radius: 8px;
-            min-height: 90px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: 2px solid #444;
-        }
-
-        .ad-placeholder {
-            width: 100%;
-            height: 90px;
-            background: linear-gradient(45deg, #333, #555);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #aaa;
-            font-size: 16px;
-            border-radius: 4px;
-        }
-
-        .main-content {
-            flex: 1;
             padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
         }
-
-        .video-wrapper {
-            width: 100%;
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            background: linear-gradient(to right, #1a1a2e, #16213e);
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            color: #ff6b6b;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            color: #a0a0c0;
             max-width: 800px;
-            margin: 20px 0;
-            position: relative;
-            background: #000;
+            margin: 0 auto;
+        }
+        
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .video-card {
+            background: linear-gradient(to bottom right, #1e1e3a, #252547);
             border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.7);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-
-        .ad-overlay {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(255, 69, 0, 0.9);
-            color: white;
-            padding: 4px 10px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
-            z-index: 10;
+        
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.5);
         }
-
-        video {
-            width: 100%;
-            height: auto;
-            display: block;
-            border-radius: 8px;
-            max-height: 70vh;
-        }
-
-        .video-info {
-            width: 100%;
-            max-width: 800px;
-            background: #222;
+        
+        .ad-container {
+            background-color: #0d0d1a;
             padding: 15px;
-            border-radius: 8px;
-            margin: 10px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
+            text-align: center;
+            border-bottom: 2px solid #333355;
         }
-
-        .video-counter {
-            font-size: 16px;
-            color: #ff4500;
+        
+        .ad-label {
+            font-size: 0.8rem;
+            color: #8888aa;
+            margin-bottom: 5px;
+        }
+        
+        .video-placeholder {
+            height: 180px;
+            background: linear-gradient(to bottom right, #2d2d5a, #3a3a6e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .video-number {
+            font-size: 5rem;
             font-weight: bold;
+            color: rgba(255, 255, 255, 0.1);
+            position: absolute;
+            z-index: 1;
         }
-
-        .video-controls {
-            display: flex;
-            gap: 10px;
+        
+        .play-icon {
+            font-size: 4rem;
+            color: rgba(255, 107, 107, 0.7);
+            z-index: 2;
         }
-
-        .btn-control {
-            padding: 8px 16px;
-            background: #333;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background 0.3s;
-        }
-
-        .btn-control:hover {
-            background: #444;
-        }
-
-        .footer {
-            width: 100%;
+        
+        .video-info {
             padding: 20px;
-            background: #222;
-            border-top: 2px solid #333;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: sticky;
-            bottom: 0;
-            z-index: 1000;
         }
-
-        .btn-primary {
-            padding: 15px 30px;
-            background: linear-gradient(to right, #ff4500, #ff6347);
+        
+        .video-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #f0f0f0;
+        }
+        
+        .video-desc {
+            font-size: 0.95rem;
+            color: #b0b0d0;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .btn-container {
+            padding: 0 20px 20px;
+        }
+        
+        .smartlink-btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(to right, #ff6b6b, #ff8e53);
             color: white;
+            text-align: center;
             text-decoration: none;
             border-radius: 8px;
-            font-size: 18px;
             font-weight: bold;
-            display: inline-block;
-            margin: 10px 0;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(255, 69, 0, 0.3);
-            min-width: 250px;
-            text-align: center;
-            border: none;
-            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(255, 107, 107, 0.3);
         }
-
-        .btn-primary:hover {
-            background: linear-gradient(to right, #e03e00, #ff4500);
+        
+        .smartlink-btn:hover {
+            background: linear-gradient(to right, #ff5252, #ff7a3d);
             transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(255, 69, 0, 0.4);
+            box-shadow: 0 6px 15px rgba(255, 107, 107, 0.4);
         }
-
-        .progress-container {
-            width: 100%;
-            max-width: 800px;
-            margin: 15px auto;
-            background: #333;
-            border-radius: 10px;
-            overflow: hidden;
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 40px 0;
         }
-
-        .progress-bar {
-            height: 6px;
-            background: #ff4500;
-            width: 1%;
-            transition: width 0.5s ease;
-        }
-
-        .loading {
-            display: none;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #ff4500;
-            font-size: 18px;
-            background: rgba(0,0,0,0.8);
-            padding: 20px;
-            border-radius: 8px;
-            z-index: 5;
-        }
-
-        .ad-refresh-btn {
-            margin-left: 10px;
-            padding: 4px 8px;
-            background: #ff4500;
+        
+        .page-btn {
+            padding: 10px 18px;
+            background-color: #252547;
+            color: #f0f0f0;
             border: none;
-            border-radius: 3px;
-            color: white;
-            font-size: 10px;
+            border-radius: 6px;
             cursor: pointer;
+            transition: all 0.3s ease;
         }
-
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #4CAF50;
-            color: white;
-            padding: 15px;
-            border-radius: 5px;
-            display: none;
-            z-index: 1001;
-            animation: slideIn 0.3s ease;
+        
+        .page-btn:hover {
+            background-color: #333366;
         }
-
-        @keyframes slideIn {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+        
+        .page-btn.active {
+            background: linear-gradient(to right, #ff6b6b, #ff8e53);
+            font-weight: bold;
         }
-
+        
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 40px;
+            border-top: 1px solid #333355;
+            color: #8888aa;
+            font-size: 0.9rem;
+        }
+        
         @media (max-width: 768px) {
-            .video-info {
-                flex-direction: column;
-                gap: 10px;
-                text-align: center;
+            .video-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 20px;
             }
             
-            .btn-primary {
-                padding: 12px 24px;
-                font-size: 16px;
+            h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .video-grid {
+                grid-template-columns: 1fr;
             }
             
-            .ad-container {
-                max-width: 320px;
-                min-height: 100px;
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
             }
         }
     </style>
 </head>
 <body>
-
-    <!-- Header dengan Iklan -->
-    <div class="header">
-        <div class="ad-container" id="adTop">
-            <!-- Iklan akan dimuat di sini -->
-            <div class="ad-placeholder" id="adPlaceholder">
-                Loading Advertisement...
-            </div>
-        </div>
-    </div>
-
-    <!-- Notifikasi -->
-    <div class="notification" id="notification">
-        Video changed successfully!
-    </div>
-
-    <!-- Konten Utama -->
-    <div class="main-content">
-        <!-- Video Player -->
-        <div class="video-wrapper">
-            <div class="ad-overlay">
-                AD <button class="ad-refresh-btn" onclick="refreshAd()">⟳</button>
-            </div>
-            <video id="mainVideo" controls playsinline>
-                Your browser does not support the video tag.
-            </video>
-            <div class="loading" id="loading">Loading Video...</div>
-        </div>
-
-        <!-- Informasi Video -->
-        <div class="video-info">
-            <div class="video-counter">
-                Video <span id="currentVideoNum">1</span> of 100
-            </div>
-            <div class="video-controls">
-                <button class="btn-control" onclick="prevVideo()">⏮ Previous</button>
-                <button class="btn-control" onclick="nextVideo()">Next ⏭</button>
-                <button class="btn-control" onclick="randomVideo()">🎲 Random</button>
-            </div>
-        </div>
-
-        <!-- Progress Bar -->
-        <div class="progress-container">
-            <div class="progress-bar" id="progressBar"></div>
-        </div>
-    </div>
-
-    <!-- Footer dengan Tombol -->
-    <div class="footer">
-        <!-- Tombol Utama - SELALU TAMPAK -->
-        <a id="fullVideoBtn" class="btn-primary" target="_blank">
-            <span id="btnText">CLICK FOR FULL VIDEO HERE</span>
-        </a>
+    <div class="container">
+        <header>
+            <h1>Koleksi 50 Video Pilihan</h1>
+            <p class="tagline">Temukan video menarik dari berbagai kategori. Tonton video favorit Anda dan temukan konten eksklusif lainnya.</p>
+        </header>
         
-        <div style="margin-top: 10px; font-size: 12px; color: #888;">
-            Watch all videos for best experience • Ad supported content
+        <div class="video-grid" id="videoContainer">
+            <!-- Video cards akan di-generate oleh JavaScript -->
         </div>
+        
+        <div class="pagination" id="pagination">
+            <!-- Pagination akan di-generate oleh JavaScript -->
+        </div>
+        
+        <footer>
+            <p>&copy; 2023 Video Streaming Platform. Semua hak dilindungi.</p>
+            <p>Halaman ini menampilkan iklan dari partner kami.</p>
+        </footer>
     </div>
 
     <script>
-        // ========== KONFIGURASI ==========
-        const videoBaseURL = 'https://raw.githubusercontent.com/ANUGRAH-OGI/dua/main/video';
-        const totalVideos = 100;
-        let currentVideo = 1;
-        let watchedVideos = new Set([1]);
-        let isAdLoaded = false;
-
-        // ========== ELEMENTS ==========
-        const videoElement = document.getElementById('mainVideo');
-        const loadingElement = document.getElementById('loading');
-        const currentVideoNum = document.getElementById('currentVideoNum');
-        const fullVideoBtn = document.getElementById('fullVideoBtn');
-        const btnText = document.getElementById('btnText');
-        const progressBar = document.getElementById('progressBar');
-        const notification = document.getElementById('notification');
-
-        // ========== FUNGSI UNTUK MEMASTIKAN ELEMEN TETAP ADA ==========
-        function ensureElementsVisible() {
-            // Force show all critical elements
-            document.querySelector('.header').style.display = 'block';
-            document.querySelector('.footer').style.display = 'flex';
-            document.querySelector('.video-info').style.display = 'flex';
-            document.querySelector('.progress-container').style.display = 'block';
-            
-            // Update button text to make sure it's visible
-            btnText.textContent = `WATCH FULL VIDEO ${currentVideo} HERE`;
-            
-            // Force button to be visible and have href
-            fullVideoBtn.style.display = 'inline-block';
-            fullVideoBtn.style.opacity = '1';
-            fullVideoBtn.style.visibility = 'visible';
-            fullVideoBtn.href = `https://www.effectivegatecpm.com/is7fm9bydu?key=921c5e2f3f1f66b17534e630cbde76d7&vid=${currentVideo}`;
-            
-            console.log('Elements visibility enforced for video', currentVideo);
+        // Data untuk 50 video
+        const videoData = [];
+        const videoTitles = [
+            "Petualangan di Hutan Tropis", "Keajaiban Bawah Laut", "Kuliner Nusantara", "Teknologi Masa Depan",
+            "Sejarah Peradaban Kuno", "Tips Kesehatan Harian", "Musik Jazz Klasik", "Olahraga Ekstrem",
+            "Seni Digital Modern", "Wisata Kota Tua", "Hewan Langka Dunia", "Fotografi Alam",
+            "Bisnis Online Sukses", "Memasak Makanan Cepat", "Komedi Stand-up", "Review Gadget Terbaru",
+            "Tutorial Makeup", "Permainan Tradisional", "Arsitektur Modern", "Belajar Bahasa Asing",
+            "Budaya Lokal Indonesia", "Teknik Fotografi", "Review Film Box Office", "Tips Investasi",
+            "Teknologi Blockchain", "Sejarah Kerajaan Nusantara", "Seni Kaligrafi", "Eksperimen Sains",
+            "Review Buku Best Seller", "Tutorial Desain Grafis", "Olahraga Air Menantang", "Kisah Inspiratif",
+            "Teknik Memancing", "Permainan Puzzle", "Review Smartphone", "Tutorial Programming",
+            "Seni Melukis Digital", "Eksplorasi Gunung", "Kuliner Street Food", "Tips Wawancara Kerja",
+            "Review Laptop Gaming", "Tutorial Yoga", "Kehidupan Satwa Liar", "Permainan Kartu",
+            "Teknik Public Speaking", "Review Kamera DSLR", "Tutorial Editing Video", "Eksplorasi Gua",
+            "Kuliner Malam Hari", "Tips Mengatur Keuangan"
+        ];
+        
+        // Generate data untuk 50 video
+        for (let i = 1; i <= 50; i++) {
+            const titleIndex = (i - 1) % videoTitles.length;
+            videoData.push({
+                id: i,
+                title: `Video ${i}: ${videoTitles[titleIndex]}`,
+                description: `Ini adalah video ke-${i} dengan konten menarik tentang ${videoTitles[titleIndex].toLowerCase()}. Tonton video lengkapnya dan nikmati pengalaman menonton yang berbeda.`,
+                adCode: `<script async="async" data-cfasync="false" src="//pl28164523.effectivegatecpm.com/094b719a09cdaf8f4ba6b0d948d88f72/invoke.js"><\/script>
+<div id="container-094b719a09cdaf8f4ba6b0d948d88f72"></div>`,
+                buttonLink: "https://www.effectivegatecpm.com/is7fm9bydu?key=921c5e2f3f1f66b17534e630cbde76d7"
+            });
         }
-
-        // ========== FUNGSI IKLAN ==========
-        function loadAd() {
-            const adContainer = document.getElementById('adTop');
-            const placeholder = document.getElementById('adPlaceholder');
+        
+        // Konfigurasi pagination
+        const videosPerPage = 10;
+        let currentPage = 1;
+        
+        // Fungsi untuk menampilkan video
+        function displayVideos(page) {
+            const videoContainer = document.getElementById('videoContainer');
+            videoContainer.innerHTML = '';
             
-            // Clear previous ad
-            adContainer.innerHTML = '';
+            const startIndex = (page - 1) * videosPerPage;
+            const endIndex = Math.min(startIndex + videosPerPage, videoData.length);
             
-            // Create new ad container
-            const adDiv = document.createElement('div');
-            adDiv.id = 'adContainer';
-            adDiv.style.width = '100%';
-            adDiv.style.height = '90px';
-            adDiv.style.display = 'flex';
-            adDiv.style.justifyContent = 'center';
-            adDiv.style.alignItems = 'center';
-            
-            // Try to load Adsterra script
-            try {
-                const script = document.createElement('script');
-                script.async = true;
-                script.dataset.cfasync = "false";
-                script.src = "//pl28164523.effectivegatecpm.com/094b719a09cdaf8f4ba6b0d948d88f72/invoke.js";
+            for (let i = startIndex; i < endIndex; i++) {
+                const video = videoData[i];
+                const videoCard = document.createElement('div');
+                videoCard.className = 'video-card';
                 
-                script.onload = function() {
-                    console.log("Ad script loaded");
-                    const innerAdDiv = document.createElement('div');
-                    innerAdDiv.id = 'container-094b719a09cdaf8f4ba6b0d948d88f72';
-                    innerAdDiv.style.width = '100%';
-                    innerAdDiv.style.height = '90px';
-                    adDiv.appendChild(innerAdDiv);
-                    adContainer.appendChild(adDiv);
-                    isAdLoaded = true;
-                    
-                    // Check if ad actually loaded
-                    setTimeout(() => {
-                        if (innerAdDiv.innerHTML.trim() === '') {
-                            showAdFallback();
-                        }
-                    }, 2000);
-                };
+                videoCard.innerHTML = `
+                    <div class="ad-container">
+                        <div class="ad-label">Iklan</div>
+                        ${video.adCode}
+                    </div>
+                    <div class="video-placeholder">
+                        <div class="video-number">${video.id}</div>
+                        <div class="play-icon">▶</div>
+                    </div>
+                    <div class="video-info">
+                        <h3 class="video-title">${video.title}</h3>
+                        <p class="video-desc">${video.description}</p>
+                    </div>
+                    <div class="btn-container">
+                        <a href="${video.buttonLink}" target="_blank" class="smartlink-btn">Click on long duration videos</a>
+                    </div>
+                `;
                 
-                script.onerror = function() {
-                    console.log("Ad script failed, using fallback");
-                    showAdFallback();
-                };
-                
-                document.head.appendChild(script);
-            } catch (error) {
-                console.log("Error loading ad:", error);
-                showAdFallback();
+                videoContainer.appendChild(videoCard);
             }
+            
+            // Update pagination
+            updatePagination(page);
         }
-
-        function showAdFallback() {
-            const adContainer = document.getElementById('adTop');
-            adContainer.innerHTML = `
-                <div class="ad-placeholder" style="flex-direction: column; gap: 10px;">
-                    <div style="color: #ff4500; font-weight: bold;">ADVERTISEMENT</div>
-                    <div style="font-size: 12px; color: #aaa;">Please disable ad blocker</div>
-                    <button onclick="loadAd()" style="padding: 5px 10px; background: #ff4500; color: white; border: none; border-radius: 3px; cursor: pointer;">
-                        Reload Ad
-                    </button>
-                </div>
-            `;
-        }
-
-        function refreshAd() {
-            console.log("Refreshing ad...");
-            isAdLoaded = false;
-            loadAd();
-            showNotification("Advertisement refreshed");
-        }
-
-        // ========== FUNGSI VIDEO ==========
-        function playVideo(videoNumber) {
-            // Validate video number
-            if (videoNumber < 1) videoNumber = 1;
-            if (videoNumber > totalVideos) videoNumber = totalVideos;
+        
+        // Fungsi untuk membuat pagination
+        function updatePagination(activePage) {
+            const paginationContainer = document.getElementById('pagination');
+            paginationContainer.innerHTML = '';
             
-            currentVideo = videoNumber;
-            console.log(`Playing video ${currentVideo}`);
+            const totalPages = Math.ceil(videoData.length / videosPerPage);
             
-            // Update UI elements
-            currentVideoNum.textContent = currentVideo;
-            btnText.textContent = `WATCH FULL VIDEO ${currentVideo} HERE`;
-            
-            // Update progress
-            watchedVideos.add(currentVideo);
-            updateProgressBar();
-            
-            // Show loading
-            loadingElement.style.display = 'block';
-            videoElement.style.display = 'none';
-            
-            // Construct video URL
-            const videoUrl = `${videoBaseURL}${currentVideo}.mp4`;
-            console.log(`Loading: ${videoUrl}`);
-            
-            // Set video source
-            videoElement.src = videoUrl;
-            
-            // Reset event listeners
-            videoElement.onloadeddata = null;
-            videoElement.onerror = null;
-            
-            // Set new event listeners
-            videoElement.onloadeddata = function() {
-                console.log(`Video ${currentVideo} loaded successfully`);
-                loadingElement.style.display = 'none';
-                videoElement.style.display = 'block';
-                
-                // ENSURE ELEMENTS ARE VISIBLE
-                ensureElementsVisible();
-                
-                // Try to play
-                if (videoElement.paused) {
-                    videoElement.play().catch(e => {
-                        console.log("Autoplay blocked, waiting for user interaction");
-                        videoElement.muted = true;
-                        videoElement.play().catch(() => {
-                            // If still blocked, just show video
-                        });
-                    });
+            // Tombol sebelumnya
+            const prevButton = document.createElement('button');
+            prevButton.className = 'page-btn';
+            prevButton.textContent = 'Sebelumnya';
+            prevButton.disabled = activePage === 1;
+            prevButton.addEventListener('click', () => {
+                if (activePage > 1) {
+                    currentPage = activePage - 1;
+                    displayVideos(currentPage);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
-            };
+            });
+            paginationContainer.appendChild(prevButton);
             
-            videoElement.onerror = function() {
-                console.log(`Error loading video ${currentVideo}`);
-                loadingElement.style.display = 'none';
-                videoElement.style.display = 'block';
-                
-                // Show error message on video
-                videoElement.poster = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjQ1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMjIyIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPlZpZGVvIHtjdXJyZW50VmlkZW99IG5vdCBmb3VuZDwvdGV4dD48L3N2Zz4=';
-                
-                // ENSURE ELEMENTS ARE VISIBLE even on error
-                ensureElementsVisible();
-                
-                // Try next video after 3 seconds
-                setTimeout(() => {
-                    nextVideo();
-                }, 3000);
-            };
-            
-            // Update button link
-            fullVideoBtn.href = `https://www.effectivegatecpm.com/is7fm9bydu?key=921c5e2f3f1f66b17534e630cbde76d7&vid=${currentVideo}`;
-            
-            // Show notification
-            showNotification(`Now playing video ${currentVideo}`);
-        }
-
-        // ========== NAVIGASI VIDEO ==========
-        function nextVideo() {
-            if (currentVideo < totalVideos) {
-                playVideo(currentVideo + 1);
-            } else {
-                playVideo(1); // Loop back to first
-            }
-        }
-
-        function prevVideo() {
-            if (currentVideo > 1) {
-                playVideo(currentVideo - 1);
-            } else {
-                playVideo(totalVideos); // Loop to last
-            }
-        }
-
-        function randomVideo() {
-            const random = Math.floor(Math.random() * totalVideos) + 1;
-            playVideo(random);
-        }
-
-        // ========== PROGRESS BAR ==========
-        function updateProgressBar() {
-            const progress = (watchedVideos.size / totalVideos) * 100;
-            progressBar.style.width = `${progress}%`;
-        }
-
-        // ========== NOTIFICATION ==========
-        function showNotification(message) {
-            notification.textContent = message;
-            notification.style.display = 'block';
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 3000);
-        }
-
-        // ========== EVENT LISTENERS ==========
-        videoElement.addEventListener('ended', function() {
-            console.log(`Video ${currentVideo} ended, playing next`);
-            setTimeout(() => {
-                nextVideo();
-            }, 500);
-        });
-
-        // User interaction for autoplay
-        document.addEventListener('click', function initPlay() {
-            if (videoElement.paused) {
-                videoElement.play().catch(e => {
-                    videoElement.muted = true;
-                    videoElement.play();
+            // Tombol halaman
+            for (let i = 1; i <= totalPages; i++) {
+                const pageButton = document.createElement('button');
+                pageButton.className = `page-btn ${i === activePage ? 'active' : ''}`;
+                pageButton.textContent = i;
+                pageButton.addEventListener('click', () => {
+                    currentPage = i;
+                    displayVideos(currentPage);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 });
+                paginationContainer.appendChild(pageButton);
             }
-            document.removeEventListener('click', initPlay);
-        });
-
-        // Keyboard shortcuts
-        document.addEventListener('keydown', function(e) {
-            switch(e.key) {
-                case 'ArrowRight':
-                    nextVideo();
-                    break;
-                case 'ArrowLeft':
-                    prevVideo();
-                    break;
-                case ' ':
-                    if (videoElement.paused) videoElement.play();
-                    else videoElement.pause();
-                    break;
-            }
-        });
-
-        // ========== AUTO-REFRESH IKLAN ==========
-        setInterval(() => {
-            if (Math.random() > 0.5) { // 50% chance to refresh ad
-                refreshAd();
-            }
-        }, 60000); // Every 60 seconds
-
-        // ========== PERIKSA VISIBILITAS SETIAP DETIK ==========
-        setInterval(() => {
-            ensureElementsVisible();
-        }, 1000);
-
-        // ========== INITIALIZE ==========
-        window.onload = function() {
-            console.log("Page loaded, initializing...");
             
-            // Load ad first
-            loadAd();
-            
-            // Play first video after a short delay
-            setTimeout(() => {
-                playVideo(1);
-                ensureElementsVisible();
-            }, 1000);
-            
-            // Force visibility check multiple times
-            setTimeout(ensureElementsVisible, 500);
-            setTimeout(ensureElementsVisible, 1000);
-            setTimeout(ensureElementsVisible, 2000);
-        };
-
-        // Fallback: Force visibility on any video event
-        videoElement.addEventListener('play', ensureElementsVisible);
-        videoElement.addEventListener('pause', ensureElementsVisible);
-        videoElement.addEventListener('seeking', ensureElementsVisible);
-        videoElement.addEventListener('timeupdate', ensureElementsVisible);
-
+            // Tombol selanjutnya
+            const nextButton = document.createElement('button');
+            nextButton.className = 'page-btn';
+            nextButton.textContent = 'Selanjutnya';
+            nextButton.disabled = activePage === totalPages;
+            nextButton.addEventListener('click', () => {
+                if (activePage < totalPages) {
+                    currentPage = activePage + 1;
+                    displayVideos(currentPage);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+            paginationContainer.appendChild(nextButton);
+        }
+        
+        // Inisialisasi halaman pertama
+        displayVideos(currentPage);
+        
+        // Fungsi untuk reload iklan setiap kali pindah halaman
+        function reloadAds() {
+            // Karena script iklan mungkin perlu di-reload, kita bisa coba reload script
+            // Tapi ini hanya contoh, implementasi sebenarnya tergantung dari provider iklan
+            console.log("Halaman diubah, iklan mungkin perlu di-refresh");
+        }
     </script>
-
 </body>
 </html>
