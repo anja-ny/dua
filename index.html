@@ -5,299 +5,473 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Landing Page 100 Video</title>
     <style>
+        * {
+            box-sizing: border-box;
+        }
+        
         body {
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
             background-color: #111;
             color: #fff;
-            text-align: center;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        .header {
+            width: 100%;
+            background: linear-gradient(to right, #222, #333);
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
         .ad-container {
             width: 100%;
-            background-color: #222;
-            padding: 20px 0;
-            min-height: 100px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .ad-content {
-            width: 100%;
             max-width: 728px;
-            min-height: 90px;
-            background-color: #333;
             margin: 0 auto;
+            padding: 10px;
+            background-color: #222;
+            border-radius: 8px;
+            min-height: 90px;
             display: flex;
             justify-content: center;
             align-items: center;
-        }
-
-        .video-container {
-            margin: 20px auto;
-            max-width: 800px;
-            flex-grow: 1;
-            position: relative;
-        }
-
-        video {
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-            max-height: 70vh;
-            background-color: #000;
-        }
-
-        .btn-container {
-            padding: 20px 0;
-            flex-shrink: 0;
-        }
-
-        .btn {
-            padding: 12px 24px;
-            background-color: #ff4500;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 18px;
-            display: inline-block;
-            margin: 20px 0;
-            transition: background-color 0.3s ease;
-            cursor: pointer;
-        }
-
-        .btn:hover {
-            background-color: #e03e00;
-        }
-
-        .loading {
-            display: none;
-            margin: 20px;
-            color: #ff4500;
-        }
-
-        .video-info {
-            margin: 10px 0;
-            font-size: 14px;
-            color: #aaa;
-        }
-
-        .controls {
-            margin: 15px 0;
-        }
-
-        .controls button {
-            padding: 8px 16px;
-            margin: 0 5px;
-            background-color: #333;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .controls button:hover {
-            background-color: #444;
+            border: 2px solid #444;
         }
 
         .ad-placeholder {
-            width: 728px;
+            width: 100%;
             height: 90px;
-            background: linear-gradient(45deg, #222, #444);
+            background: linear-gradient(45deg, #333, #555);
             display: flex;
             justify-content: center;
             align-items: center;
-            color: #888;
-            font-size: 14px;
-            margin: 0 auto;
+            color: #aaa;
+            font-size: 16px;
+            border-radius: 4px;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .video-wrapper {
+            width: 100%;
+            max-width: 800px;
+            margin: 20px 0;
+            position: relative;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.7);
         }
 
         .ad-overlay {
             position: absolute;
             top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.7);
-            padding: 5px 15px;
+            right: 10px;
+            background: rgba(255, 69, 0, 0.9);
+            color: white;
+            padding: 4px 10px;
             border-radius: 4px;
             font-size: 12px;
+            font-weight: bold;
             z-index: 10;
         }
 
-        .refresh-ad {
+        video {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 8px;
+            max-height: 70vh;
+        }
+
+        .video-info {
+            width: 100%;
+            max-width: 800px;
+            background: #222;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .video-counter {
+            font-size: 16px;
+            color: #ff4500;
+            font-weight: bold;
+        }
+
+        .video-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-control {
+            padding: 8px 16px;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+
+        .btn-control:hover {
+            background: #444;
+        }
+
+        .footer {
+            width: 100%;
+            padding: 20px;
+            background: #222;
+            border-top: 2px solid #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: sticky;
+            bottom: 0;
+            z-index: 1000;
+        }
+
+        .btn-primary {
+            padding: 15px 30px;
+            background: linear-gradient(to right, #ff4500, #ff6347);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 10px 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(255, 69, 0, 0.3);
+            min-width: 250px;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(to right, #e03e00, #ff4500);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 69, 0, 0.4);
+        }
+
+        .progress-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 15px auto;
+            background: #333;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #ff4500;
+            width: 1%;
+            transition: width 0.5s ease;
+        }
+
+        .loading {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #ff4500;
+            font-size: 18px;
+            background: rgba(0,0,0,0.8);
+            padding: 20px;
+            border-radius: 8px;
+            z-index: 5;
+        }
+
+        .ad-refresh-btn {
             margin-left: 10px;
-            padding: 2px 8px;
-            font-size: 10px;
+            padding: 4px 8px;
             background: #ff4500;
             border: none;
-            border-radius: 2px;
+            border-radius: 3px;
             color: white;
+            font-size: 10px;
             cursor: pointer;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #4CAF50;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+            z-index: 1001;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .video-info {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            
+            .btn-primary {
+                padding: 12px 24px;
+                font-size: 16px;
+            }
+            
+            .ad-container {
+                max-width: 320px;
+                min-height: 100px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- Iklan Adsterra -->
-    <div class="ad-container">
-        <div id="ad-top" class="ad-content">
+    <!-- Header dengan Iklan -->
+    <div class="header">
+        <div class="ad-container" id="adTop">
             <!-- Iklan akan dimuat di sini -->
-            <div class="ad-placeholder">
-                Loading advertisement...
+            <div class="ad-placeholder" id="adPlaceholder">
+                Loading Advertisement...
             </div>
         </div>
     </div>
 
-    <!-- Video -->
-    <div class="video-container">
-        <div class="ad-overlay">
-            AD
-            <button class="refresh-ad" onclick="refreshAd()">⟳</button>
-        </div>
-        <video id="mainVideo" controls playsinline></video>
-        <div id="loading" class="loading">Loading video...</div>
+    <!-- Notifikasi -->
+    <div class="notification" id="notification">
+        Video changed successfully!
     </div>
 
-    <!-- Tombol -->
-    <div class="btn-container">
-        <div class="video-info">Video <span id="currentVideoNumber">1</span> of 100</div>
-        <div class="controls">
-            <button onclick="prevVideo()">Previous</button>
-            <button onclick="nextVideo()">Next</button>
+    <!-- Konten Utama -->
+    <div class="main-content">
+        <!-- Video Player -->
+        <div class="video-wrapper">
+            <div class="ad-overlay">
+                AD <button class="ad-refresh-btn" onclick="refreshAd()">⟳</button>
+            </div>
+            <video id="mainVideo" controls playsinline>
+                Your browser does not support the video tag.
+            </video>
+            <div class="loading" id="loading">Loading Video...</div>
         </div>
-        <a id="fullVideoBtn" href="https://www.effectivegatecpm.com/is7fm9bydu?key=921c5e2f3f1f66b17534e630cbde76d7" class="btn" target="_blank">
-            <span id="btnText">Click Full Video Here</span>
+
+        <!-- Informasi Video -->
+        <div class="video-info">
+            <div class="video-counter">
+                Video <span id="currentVideoNum">1</span> of 100
+            </div>
+            <div class="video-controls">
+                <button class="btn-control" onclick="prevVideo()">⏮ Previous</button>
+                <button class="btn-control" onclick="nextVideo()">Next ⏭</button>
+                <button class="btn-control" onclick="randomVideo()">🎲 Random</button>
+            </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+    </div>
+
+    <!-- Footer dengan Tombol -->
+    <div class="footer">
+        <!-- Tombol Utama - SELALU TAMPAK -->
+        <a id="fullVideoBtn" class="btn-primary" target="_blank">
+            <span id="btnText">CLICK FOR FULL VIDEO HERE</span>
         </a>
-        <div style="font-size: 12px; color: #666; margin-top: 10px;">
-            Watch all 100 videos to unlock special content
+        
+        <div style="margin-top: 10px; font-size: 12px; color: #888;">
+            Watch all videos for best experience • Ad supported content
         </div>
     </div>
 
     <script>
-        // Konfigurasi video
+        // ========== KONFIGURASI ==========
         const videoBaseURL = 'https://raw.githubusercontent.com/ANUGRAH-OGI/dua/main/video';
         const totalVideos = 100;
         let currentVideo = 1;
-        let hasUserInteracted = false;
+        let watchedVideos = new Set([1]);
+        let isAdLoaded = false;
 
-        // Elemen DOM
+        // ========== ELEMENTS ==========
         const videoElement = document.getElementById('mainVideo');
         const loadingElement = document.getElementById('loading');
-        const currentVideoNumber = document.getElementById('currentVideoNumber');
+        const currentVideoNum = document.getElementById('currentVideoNum');
+        const fullVideoBtn = document.getElementById('fullVideoBtn');
         const btnText = document.getElementById('btnText');
+        const progressBar = document.getElementById('progressBar');
+        const notification = document.getElementById('notification');
 
-        // Konfigurasi iklan (multiple ad sources untuk redundancy)
-        const adScripts = [
-            "//pl28164523.effectivegatecpm.com/094b719a09cdaf8f4ba6b0d948d88f72/invoke.js",
-            "//pl28164523.effectivegatecpm.com/alternate-ad-script.js" // backup script
-        ];
-
-        // Inisialisasi
-        let isAdLoaded = false;
-        let videoHistory = [];
-
-        // Fungsi untuk memuat iklan
-        function loadAd() {
-            if (isAdLoaded) {
-                console.log("Ad already loaded");
-                return;
-            }
-
-            const adContainer = document.getElementById('ad-top');
-            adContainer.innerHTML = ''; // Clear previous ad
-
-            const script = document.createElement('script');
-            script.async = true;
-            script.dataset.cfasync = "false";
-            script.src = adScripts[0];
-            script.onload = function() {
-                console.log("Ad script loaded successfully");
-                isAdLoaded = true;
-                
-                // Create ad container
-                const adDiv = document.createElement('div');
-                adDiv.id = 'container-094b719a09cdaf8f4ba6b0d948d88f72';
-                adContainer.appendChild(adDiv);
-                
-                // Check if ad renders
-                setTimeout(() => {
-                    if (adDiv.innerHTML.trim() === '') {
-                        console.log("Ad not rendering, showing fallback");
-                        showAdFallback();
-                    }
-                }, 2000);
-            };
+        // ========== FUNGSI UNTUK MEMASTIKAN ELEMEN TETAP ADA ==========
+        function ensureElementsVisible() {
+            // Force show all critical elements
+            document.querySelector('.header').style.display = 'block';
+            document.querySelector('.footer').style.display = 'flex';
+            document.querySelector('.video-info').style.display = 'flex';
+            document.querySelector('.progress-container').style.display = 'block';
             
-            script.onerror = function() {
-                console.log("Failed to load ad script, using fallback");
-                showAdFallback();
-            };
+            // Update button text to make sure it's visible
+            btnText.textContent = `WATCH FULL VIDEO ${currentVideo} HERE`;
             
-            adContainer.appendChild(script);
+            // Force button to be visible and have href
+            fullVideoBtn.style.display = 'inline-block';
+            fullVideoBtn.style.opacity = '1';
+            fullVideoBtn.style.visibility = 'visible';
+            fullVideoBtn.href = `https://www.effectivegatecpm.com/is7fm9bydu?key=921c5e2f3f1f66b17534e630cbde76d7&vid=${currentVideo}`;
+            
+            console.log('Elements visibility enforced for video', currentVideo);
         }
 
-        // Fallback jika iklan gagal dimuat
+        // ========== FUNGSI IKLAN ==========
+        function loadAd() {
+            const adContainer = document.getElementById('adTop');
+            const placeholder = document.getElementById('adPlaceholder');
+            
+            // Clear previous ad
+            adContainer.innerHTML = '';
+            
+            // Create new ad container
+            const adDiv = document.createElement('div');
+            adDiv.id = 'adContainer';
+            adDiv.style.width = '100%';
+            adDiv.style.height = '90px';
+            adDiv.style.display = 'flex';
+            adDiv.style.justifyContent = 'center';
+            adDiv.style.alignItems = 'center';
+            
+            // Try to load Adsterra script
+            try {
+                const script = document.createElement('script');
+                script.async = true;
+                script.dataset.cfasync = "false";
+                script.src = "//pl28164523.effectivegatecpm.com/094b719a09cdaf8f4ba6b0d948d88f72/invoke.js";
+                
+                script.onload = function() {
+                    console.log("Ad script loaded");
+                    const innerAdDiv = document.createElement('div');
+                    innerAdDiv.id = 'container-094b719a09cdaf8f4ba6b0d948d88f72';
+                    innerAdDiv.style.width = '100%';
+                    innerAdDiv.style.height = '90px';
+                    adDiv.appendChild(innerAdDiv);
+                    adContainer.appendChild(adDiv);
+                    isAdLoaded = true;
+                    
+                    // Check if ad actually loaded
+                    setTimeout(() => {
+                        if (innerAdDiv.innerHTML.trim() === '') {
+                            showAdFallback();
+                        }
+                    }, 2000);
+                };
+                
+                script.onerror = function() {
+                    console.log("Ad script failed, using fallback");
+                    showAdFallback();
+                };
+                
+                document.head.appendChild(script);
+            } catch (error) {
+                console.log("Error loading ad:", error);
+                showAdFallback();
+            }
+        }
+
         function showAdFallback() {
-            const adContainer = document.getElementById('ad-top');
+            const adContainer = document.getElementById('adTop');
             adContainer.innerHTML = `
                 <div class="ad-placeholder" style="flex-direction: column; gap: 10px;">
-                    <div>Advertisement</div>
-                    <div style="font-size: 12px; color: #aaa;">
-                        Please disable ad blocker to support us
-                    </div>
+                    <div style="color: #ff4500; font-weight: bold;">ADVERTISEMENT</div>
+                    <div style="font-size: 12px; color: #aaa;">Please disable ad blocker</div>
+                    <button onclick="loadAd()" style="padding: 5px 10px; background: #ff4500; color: white; border: none; border-radius: 3px; cursor: pointer;">
+                        Reload Ad
+                    </button>
                 </div>
             `;
         }
 
-        // Refresh iklan
         function refreshAd() {
+            console.log("Refreshing ad...");
             isAdLoaded = false;
             loadAd();
+            showNotification("Advertisement refreshed");
         }
 
-        // Fungsi untuk memuat dan memutar video
-        function playVideo(number) {
-            if (number < 1) number = 1;
-            if (number > totalVideos) number = totalVideos;
+        // ========== FUNGSI VIDEO ==========
+        function playVideo(videoNumber) {
+            // Validate video number
+            if (videoNumber < 1) videoNumber = 1;
+            if (videoNumber > totalVideos) videoNumber = totalVideos;
             
-            currentVideo = number;
-            currentVideoNumber.textContent = currentVideo;
+            currentVideo = videoNumber;
+            console.log(`Playing video ${currentVideo}`);
             
-            // Update tombol text berdasarkan video
-            btnText.textContent = `Watch Full Video ${currentVideo}`;
+            // Update UI elements
+            currentVideoNum.textContent = currentVideo;
+            btnText.textContent = `WATCH FULL VIDEO ${currentVideo} HERE`;
             
-            // Tambah ke history
-            if (!videoHistory.includes(currentVideo)) {
-                videoHistory.push(currentVideo);
-            }
+            // Update progress
+            watchedVideos.add(currentVideo);
+            updateProgressBar();
             
+            // Show loading
             loadingElement.style.display = 'block';
             videoElement.style.display = 'none';
             
+            // Construct video URL
             const videoUrl = `${videoBaseURL}${currentVideo}.mp4`;
-            console.log(`Loading video ${currentVideo}: ${videoUrl}`);
+            console.log(`Loading: ${videoUrl}`);
             
             // Set video source
             videoElement.src = videoUrl;
             
-            // Event listeners untuk video
+            // Reset event listeners
+            videoElement.onloadeddata = null;
+            videoElement.onerror = null;
+            
+            // Set new event listeners
             videoElement.onloadeddata = function() {
                 console.log(`Video ${currentVideo} loaded successfully`);
                 loadingElement.style.display = 'none';
                 videoElement.style.display = 'block';
                 
-                // Coba play jika user sudah berinteraksi
-                if (hasUserInteracted) {
+                // ENSURE ELEMENTS ARE VISIBLE
+                ensureElementsVisible();
+                
+                // Try to play
+                if (videoElement.paused) {
                     videoElement.play().catch(e => {
-                        console.log("Autoplay blocked:", e);
-                        // Fallback: mute and play
+                        console.log("Autoplay blocked, waiting for user interaction");
                         videoElement.muted = true;
-                        videoElement.play();
+                        videoElement.play().catch(() => {
+                            // If still blocked, just show video
+                        });
                     });
                 }
             };
@@ -307,8 +481,11 @@
                 loadingElement.style.display = 'none';
                 videoElement.style.display = 'block';
                 
-                // Show error in video element
+                // Show error message on video
                 videoElement.poster = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjQ1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMjIyIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPlZpZGVvIHtjdXJyZW50VmlkZW99IG5vdCBmb3VuZDwvdGV4dD48L3N2Zz4=';
+                
+                // ENSURE ELEMENTS ARE VISIBLE even on error
+                ensureElementsVisible();
                 
                 // Try next video after 3 seconds
                 setTimeout(() => {
@@ -316,17 +493,19 @@
                 }, 3000);
             };
             
-            // Update smart link (bisa berbeda per video jika diperlukan)
-            const smartLink = `https://www.effectivegatecpm.com/is7fm9bydu?key=921c5e2f3f1f66b17534e630cbde76d7&video=${currentVideo}`;
-            document.getElementById('fullVideoBtn').href = smartLink;
+            // Update button link
+            fullVideoBtn.href = `https://www.effectivegatecpm.com/is7fm9bydu?key=921c5e2f3f1f66b17534e630cbde76d7&vid=${currentVideo}`;
+            
+            // Show notification
+            showNotification(`Now playing video ${currentVideo}`);
         }
 
-        // Navigasi video
+        // ========== NAVIGASI VIDEO ==========
         function nextVideo() {
             if (currentVideo < totalVideos) {
                 playVideo(currentVideo + 1);
             } else {
-                playVideo(1); // Loop ke video pertama
+                playVideo(1); // Loop back to first
             }
         }
 
@@ -334,85 +513,101 @@
             if (currentVideo > 1) {
                 playVideo(currentVideo - 1);
             } else {
-                playVideo(totalVideos); // Loop ke video terakhir
+                playVideo(totalVideos); // Loop to last
             }
         }
 
-        // Event ketika video selesai
-        videoElement.addEventListener('ended', () => {
-            console.log(`Video ${currentVideo} ended`);
-            
-            // Tampilkan pesan sebelum pindah ke video berikutnya
+        function randomVideo() {
+            const random = Math.floor(Math.random() * totalVideos) + 1;
+            playVideo(random);
+        }
+
+        // ========== PROGRESS BAR ==========
+        function updateProgressBar() {
+            const progress = (watchedVideos.size / totalVideos) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
+        // ========== NOTIFICATION ==========
+        function showNotification(message) {
+            notification.textContent = message;
+            notification.style.display = 'block';
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+
+        // ========== EVENT LISTENERS ==========
+        videoElement.addEventListener('ended', function() {
+            console.log(`Video ${currentVideo} ended, playing next`);
             setTimeout(() => {
                 nextVideo();
-            }, 1000);
+            }, 500);
         });
 
-        // Event untuk interaksi pengguna
-        document.addEventListener('click', function firstInteraction() {
-            if (!hasUserInteracted) {
-                hasUserInteracted = true;
-                console.log("First user interaction");
-                
-                // Coba play video
-                if (videoElement.paused) {
-                    videoElement.play().catch(e => {
-                        console.log("Play blocked:", e);
-                        videoElement.muted = true;
-                        videoElement.play();
-                    });
-                }
-                
-                // Load iklan jika belum
-                if (!isAdLoaded) {
-                    loadAd();
-                }
+        // User interaction for autoplay
+        document.addEventListener('click', function initPlay() {
+            if (videoElement.paused) {
+                videoElement.play().catch(e => {
+                    videoElement.muted = true;
+                    videoElement.play();
+                });
             }
-        }, { once: false }); // Bisa multiple clicks
+            document.removeEventListener('click', initPlay);
+        });
 
         // Keyboard shortcuts
         document.addEventListener('keydown', function(e) {
             switch(e.key) {
                 case 'ArrowRight':
-                case ' ':
                     nextVideo();
                     break;
                 case 'ArrowLeft':
                     prevVideo();
                     break;
+                case ' ':
+                    if (videoElement.paused) videoElement.play();
+                    else videoElement.pause();
+                    break;
             }
         });
 
-        // Auto-refresh iklan setiap 60 detik
+        // ========== AUTO-REFRESH IKLAN ==========
         setInterval(() => {
-            if (isAdLoaded && Math.random() > 0.7) { // 30% chance to refresh
+            if (Math.random() > 0.5) { // 50% chance to refresh ad
                 refreshAd();
             }
-        }, 60000);
+        }, 60000); // Every 60 seconds
 
-        // Load iklan pertama kali
-        setTimeout(() => {
-            loadAd();
+        // ========== PERIKSA VISIBILITAS SETIAP DETIK ==========
+        setInterval(() => {
+            ensureElementsVisible();
         }, 1000);
 
-        // Mulai dari video pertama
-        playVideo(currentVideo);
-
-        // Progress tracking (opsional)
-        function updateProgress() {
-            const progress = Math.round((videoHistory.length / totalVideos) * 100);
-            console.log(`Progress: ${progress}% (${videoHistory.length}/${totalVideos} videos watched)`);
+        // ========== INITIALIZE ==========
+        window.onload = function() {
+            console.log("Page loaded, initializing...");
             
-            // Bisa ditampilkan di UI jika diperlukan
-            if (videoHistory.length >= 5) {
-                btnText.textContent = `Unlock Full Experience (${videoHistory.length}/100)`;
-            }
-        }
+            // Load ad first
+            loadAd();
+            
+            // Play first video after a short delay
+            setTimeout(() => {
+                playVideo(1);
+                ensureElementsVisible();
+            }, 1000);
+            
+            // Force visibility check multiple times
+            setTimeout(ensureElementsVisible, 500);
+            setTimeout(ensureElementsVisible, 1000);
+            setTimeout(ensureElementsVisible, 2000);
+        };
 
-        // Update progress setiap kali video baru ditonton
-        videoElement.addEventListener('play', () => {
-            updateProgress();
-        });
+        // Fallback: Force visibility on any video event
+        videoElement.addEventListener('play', ensureElementsVisible);
+        videoElement.addEventListener('pause', ensureElementsVisible);
+        videoElement.addEventListener('seeking', ensureElementsVisible);
+        videoElement.addEventListener('timeupdate', ensureElementsVisible);
 
     </script>
 
