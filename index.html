@@ -27,7 +27,6 @@
             background-color: #111;
             padding: 20px;
             text-align: center;
-            border-bottom: 2px solid #333;
             width: 100%;
             max-width: 800px;
             min-height: 150px;
@@ -35,8 +34,9 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            margin-bottom: 20px;
-            border-radius: 8px 8px 0 0;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            border: 1px solid #333;
         }
         
         .video-player-container {
@@ -44,6 +44,7 @@
             width: 100%;
             max-width: 800px;
             text-align: center;
+            margin-bottom: 40px;
         }
         
         .video-player-element {
@@ -55,6 +56,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            border-radius: 8px;
+            border: 1px solid #444;
         }
         
         .video-player-element video {
@@ -77,37 +80,42 @@
         
         .ad-native-container {
             background-color: #111;
-            padding: 20px;
+            padding: 25px;
             text-align: center;
             width: 100%;
             max-width: 800px;
-            min-height: 100px;
+            min-height: 120px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            margin: 20px 0;
+            margin: 40px 0 30px 0;
+            border-radius: 10px;
+            border: 1px solid #333;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
         
         .btn-container {
             background-color: #111;
-            padding: 30px;
+            padding: 35px;
             text-align: center;
             width: 100%;
             max-width: 800px;
-            border-radius: 0 0 8px 8px;
+            border-radius: 10px;
+            border: 1px solid #333;
+            margin-top: 10px;
         }
         
         .smartlink-btn {
             display: inline-block;
-            padding: 18px 40px;
+            padding: 20px 50px;
             background: linear-gradient(to right, #ff0000, #ff6600);
             color: white;
             text-align: center;
             text-decoration: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-weight: bold;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             border: none;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -121,6 +129,11 @@
             box-shadow: 0 10px 20px rgba(255, 0, 0, 0.4);
         }
         
+        .spacer {
+            height: 20px;
+            width: 100%;
+        }
+        
         @media (max-width: 768px) {
             .video-player-element {
                 height: 350px;
@@ -128,21 +141,46 @@
             
             .smartlink-btn {
                 min-width: 100%;
-                padding: 16px 30px;
+                padding: 18px 35px;
+                font-size: 1.3rem;
+            }
+            
+            .ad-container, .ad-native-container {
+                margin-bottom: 25px;
+                margin-top: 15px;
+            }
+            
+            .video-player-container {
+                margin-bottom: 30px;
+            }
+            
+            .btn-container {
+                padding: 25px;
             }
         }
         
         @media (max-width: 480px) {
             .video-player-element {
-                height: 250px;
+                height: 280px;
             }
             
             body {
-                padding: 10px;
+                padding: 15px;
             }
             
             .ad-container, .ad-native-container, .btn-container {
-                padding: 15px;
+                padding: 20px;
+                margin: 20px 0;
+            }
+            
+            .video-player-container {
+                margin-bottom: 25px;
+            }
+            
+            .smartlink-btn {
+                padding: 16px 25px;
+                font-size: 1.2rem;
+                min-width: 100%;
             }
         }
     </style>
@@ -162,6 +200,9 @@
             <!-- Video akan dimuat di sini berdasarkan parameter URL -->
         </div>
     </div>
+    
+    <!-- Spacer untuk memberikan jarak -->
+    <div class="spacer"></div>
     
     <!-- Iklan native banner di bawah video -->
     <div class="ad-native-container">
@@ -231,36 +272,31 @@
                 // Update judul halaman
                 document.title = `Video ${videoId}`;
                 
-                // Update iklan pertama (sebenarnya sama, tapi jika nanti beda bisa diubah di sini)
+                console.log(`Video ${videoId} dimuat: ${video.videoUrl}`);
+                
+                // Iklan tidak perlu dimuat ulang karena sama untuk semua video
+                // Tapi kita akan tetap update untuk konsistensi
                 document.getElementById('adContent').innerHTML = video.adCode1;
-                
-                // Update iklan native banner
                 document.getElementById('nativeAdContent').innerHTML = video.adCode2;
-                
-                // Update tombol smartlink
                 document.querySelector('.smartlink-btn').href = video.smartlink;
                 
-                console.log(`Video ${videoId} dimuat: ${video.videoUrl}`);
-                console.log(`Iklan pertama dimuat untuk video ${videoId}`);
-                console.log(`Iklan native banner dimuat untuk video ${videoId}`);
-                console.log(`Smartlink untuk video ${videoId}: ${video.smartlink}`);
-                
-                // Setelah mengubah DOM, kita perlu memuat ulang skrip iklan
-                loadAdScripts();
+                // Muat ulang skrip iklan
+                reloadAdScripts();
             } else {
                 // Jika video tidak ditemukan, tampilkan placeholder
                 videoPlayer.innerHTML = `<div class="video-placeholder">VIDEO ${videoId}</div>`;
             }
         }
         
-        // Fungsi untuk memuat ulang skrip iklan setelah DOM diubah
-        function loadAdScripts() {
+        // Fungsi untuk memuat ulang skrip iklan
+        function reloadAdScripts() {
             // Fungsi untuk memuat skrip baru
-            function loadScript(src, async = true, cfasync = false) {
+            function loadScript(src, async = true, cfasync = false, type = 'text/javascript') {
                 return new Promise((resolve, reject) => {
                     const script = document.createElement('script');
                     script.src = src;
                     script.async = async;
+                    script.type = type;
                     if (cfasync) {
                         script.setAttribute('data-cfasync', 'false');
                     }
@@ -270,7 +306,7 @@
                 });
             }
             
-            // Hapus skrip iklan lama jika ada
+            // Hapus skrip iklan lama yang spesifik
             const oldScripts = document.querySelectorAll('script[src*="effectivegatecpm.com"]');
             oldScripts.forEach(script => {
                 if (script.parentNode) {
@@ -278,7 +314,7 @@
                 }
             });
             
-            // Hapus container iklan native lama
+            // Hapus container iklan native lama jika ada
             const oldNativeContainer = document.getElementById('container-094b719a09cdaf8f4ba6b0d948d88f72');
             if (oldNativeContainer) {
                 oldNativeContainer.innerHTML = '';
@@ -287,7 +323,7 @@
             // Muat ulang skrip iklan setelah jeda singkat
             setTimeout(() => {
                 // Muat iklan pertama
-                loadScript('//pl28169942.effectivegatecpm.com/76/b6/de/76b6de14752f5bf231c0d25182f931a3.js', false)
+                loadScript('//pl28169942.effectivegatecpm.com/76/b6/de/76b6de14752f5bf231c0d25182f931a3.js', false, false)
                     .then(() => console.log('Iklan pertama dimuat ulang'))
                     .catch(err => console.error('Gagal memuat iklan pertama:', err));
                 
@@ -295,7 +331,7 @@
                 loadScript('//pl28164523.effectivegatecpm.com/094b719a09cdaf8f4ba6b0d948d88f72/invoke.js', true, true)
                     .then(() => console.log('Iklan native banner dimuat ulang'))
                     .catch(err => console.error('Gagal memuat iklan native banner:', err));
-            }, 100);
+            }, 300); // Jeda sedikit lebih lama untuk memastikan DOM siap
         }
         
         // Fungsi untuk update URL tanpa reload halaman
@@ -333,6 +369,8 @@
                     const newVideoId = currentVideoId - 1;
                     updateURL(newVideoId);
                     loadVideo(newVideoId);
+                    // Scroll ke atas halaman
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
                 
                 // Panah kanan untuk video selanjutnya
@@ -340,6 +378,8 @@
                     const newVideoId = currentVideoId + 1;
                     updateURL(newVideoId);
                     loadVideo(newVideoId);
+                    // Scroll ke atas halaman
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
                 
                 // Angka 1-5 untuk melompat ke video tertentu
@@ -347,6 +387,8 @@
                     const num = parseInt(e.key);
                     updateURL(num);
                     loadVideo(num);
+                    // Scroll ke atas halaman
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
                 
                 // Angka 0 untuk video 10, 20, 30, 40, 50
@@ -361,6 +403,8 @@
                     
                     updateURL(newVideoId);
                     loadVideo(newVideoId);
+                    // Scroll ke atas halaman
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 }
             });
             
