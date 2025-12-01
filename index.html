@@ -12,23 +12,34 @@
             background-color: #111;
             color: #fff;
             text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         .ad-container {
             width: 100%;
             background-color: #222;
             padding: 20px 0;
+            flex-shrink: 0;
         }
 
         .video-container {
             margin: 20px auto;
             max-width: 800px;
+            flex-grow: 1;
         }
 
         video {
             width: 100%;
             height: auto;
             border-radius: 8px;
+            max-height: 70vh;
+        }
+
+        .btn-container {
+            padding: 20px 0;
+            flex-shrink: 0;
         }
 
         .btn {
@@ -46,6 +57,12 @@
         .btn:hover {
             background-color: #e03e00;
         }
+
+        .loading {
+            display: none;
+            margin: 20px;
+            color: #ff4500;
+        }
     </style>
 </head>
 <body>
@@ -58,35 +75,107 @@
 
     <!-- Video -->
     <div class="video-container">
-        <video id="mainVideo" controls autoplay muted></video>
+        <video id="mainVideo" controls playsinline>
+            Your browser does not support the video tag.
+        </video>
+        <div id="loading" class="loading">Loading video...</div>
     </div>
 
     <!-- Tombol -->
-    <a id="fullVideoBtn" href="https://www.effectivegatecpm.com/is7fm9bydu?key=921c5e2f3f1f66b17534e630cbde76d7" class="btn" target="_blank">Click Full Video Here</a>
+    <div class="btn-container">
+        <a id="fullVideoBtn" href="https://www.effectivegatecpm.com/is7fm9bydu?key=921c5e2f3f1f66b17534e630cbde76d7" class="btn" target="_blank">Click Full Video Here</a>
+    </div>
 
     <script>
         const videoBaseURL = 'https://raw.githubusercontent.com/ANUGRAH-OGI/dua/main/video';
         const totalVideos = 100;
         let currentVideo = 1;
+        let hasUserInteracted = false;
 
         const videoElement = document.getElementById('mainVideo');
         const fullVideoBtn = document.getElementById('fullVideoBtn');
+        const loadingElement = document.getElementById('loading');
 
+        // Fungsi untuk memuat dan memutar video
         function playVideo(number) {
-            videoElement.src = `${videoBaseURL}${number}.mp4`;
-            videoElement.play();
-            // tombol selalu menuju smart link
+            loadingElement.style.display = 'block';
+            videoElement.style.display = 'none';
+            
+            const videoUrl = `${videoBaseURL}${number}.mp4`;
+            console.log(`Loading video: ${videoUrl}`);
+            
+            videoElement.src = videoUrl;
+            
+            // Coba muat video
+            videoElement.load();
+            
+            // Cek apakah video valid
+            videoElement.onloadeddata = function() {
+                loadingElement.style.display = 'none';
+                videoElement.style.display = 'block';
+                
+                if (hasUserInteracted) {
+                    videoElement.play().catch(e => {
+                        console.log("Autoplay blocked:", e);
+                        videoElement.muted = true;
+                        videoElement.play();
+                    });
+                }
+            };
+            
+            videoElement.onerror = function() {
+                console.log(`Error loading video ${number}`);
+                loadingElement.style.display = 'none';
+                videoElement.style.display = 'block';
+                
+                // Coba video berikutnya jika gagal
+                setTimeout(() => {
+                    currentVideo++;
+                    if(currentVideo > totalVideos) currentVideo = 1;
+                    playVideo(currentVideo);
+                }, 2000);
+            };
+            
+            // Tombol selalu menuju smart link
             fullVideoBtn.href = "https://www.effectivegatecpm.com/is7fm9bydu?key=921c5e2f3f1f66b17534e630cbde76d7";
         }
 
+        // Event ketika video selesai
         videoElement.addEventListener('ended', () => {
             currentVideo++;
             if(currentVideo > totalVideos) currentVideo = 1;
             playVideo(currentVideo);
         });
 
-        // mulai dari video pertama
+        // Event ketika video dimulai
+        videoElement.addEventListener('play', () => {
+            hasUserInteracted = true;
+        });
+
+        // Event untuk interaksi pengguna pertama kali
+        document.addEventListener('click', function firstInteraction() {
+            hasUserInteracted = true;
+            if (videoElement.paused) {
+                videoElement.play().catch(e => {
+                    console.log("Play blocked:", e);
+                    videoElement.muted = true;
+                    videoElement.play();
+                });
+            }
+            document.removeEventListener('click', firstInteraction);
+        }, { once: true });
+
+        // Mulai dari video pertama
         playVideo(currentVideo);
+
+        // Fallback jika iklan tidak muncul
+        setTimeout(() => {
+            const adContainer = document.getElementById('container-094b719a09cdaf8f4ba6b0d948d88f72');
+            if (adContainer && adContainer.innerHTML.trim() === '') {
+                console.log("Ad not loaded, showing fallback");
+                adContainer.innerHTML = '<div style="padding: 20px; background: #333; color: white; border-radius: 5px;">Advertisement</div>';
+            }
+        }, 3000);
     </script>
 
 </body>
