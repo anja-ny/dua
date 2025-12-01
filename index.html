@@ -1,108 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Landing Page Final</title>
-<style>
-    body {
-        background: #111;
-        margin: 0;
-        padding: 0;
-        text-align: center;
-        font-family: Arial, sans-serif;
-        color: #fff;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page 100 Video</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #111;
+            color: #fff;
+            text-align: center;
+        }
 
-    .container {
-        width: 100%;
-        max-width: 600px;
-        margin: auto;
-        padding-top: 20px;
-    }
+        .ad-container {
+            width: 100%;
+            background-color: #222;
+            padding: 20px 0;
+        }
 
-    .ads-box {
-        margin-bottom: 20px;
-        position: relative;
-        z-index: 10;
-    }
+        .video-container {
+            margin: 20px auto;
+            max-width: 800px;
+        }
 
-    .video-box {
-        margin-bottom: 20px;
-        position: relative;
-        z-index: 5;
-    }
+        video {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
 
-    video {
-        width: 95%;
-        border-radius: 10px;
-    }
+        .btn {
+            padding: 12px 24px;
+            background-color: #ff4500;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 18px;
+            display: inline-block;
+            margin: 20px 0;
+            transition: background-color 0.3s ease;
+        }
 
-    .btn-next {
-        background: #ff0040;
-        border: none;
-        padding: 14px 25px;
-        border-radius: 10px;
-        color: #fff;
-        font-size: 17px;
-        cursor: pointer;
-        margin-top: 20px;
-        text-decoration: none;
-        display: inline-block;
-        position: relative;
-        z-index: 100;
-    }
-
-    .btn-next:hover {
-        background: #ff2a5f;
-    }
-</style>
+        .btn:hover {
+            background-color: #e03e00;
+        }
+    </style>
 </head>
 <body>
 
-<div class="container">
-
-    <!-- IKLAN -->
-    <div class="ads-box">
-        <iframe src="https://pl28164523.effectivegatecpm.com/094b719a09cdaf8f4ba6b0d948d88f72/invoke.html" 
-                width="100%" height="100" style="border:none;"></iframe>
+    <!-- Iklan Adsterra -->
+    <div class="ad-container">
+        <script async="async" data-cfasync="false" src="//pl28164523.effectivegatecpm.com/094b719a09cdaf8f4ba6b0d948d88f72/invoke.js"></script>
+        <div id="container-094b719a09cdaf8f4ba6b0d948d88f72"></div>
     </div>
 
-    <!-- VIDEO PLAYER -->
-    <div class="video-box">
-        <video id="mainVideo" controls autoplay muted>
-            <source src="" type="video/mp4">
-        </video>
+    <!-- Video -->
+    <div class="video-container">
+        <video id="mainVideo" controls autoplay muted></video>
     </div>
 
-    <!-- TOMBOL CLICK FULL VIDEO -->
-    <a class="btn-next" href="https://www.effectivegatecpm.com/is7fm9bydu?key=921c5e2f3f1f66b17534e630cbde76d7" target="_blank">
-        Click Full Video Here
-    </a>
+    <!-- Tombol -->
+    <a id="fullVideoBtn" href="https://www.effectivegatecpm.com/is7fm9bydu?key=921c5e2f3f1f66b17534e630cbde76d7" class="btn" target="_blank">Click Full Video Here</a>
 
-</div>
+    <script>
+        const videoBaseURL = 'https://anja-ny.github.io/dua/video'; // folder video
+        const totalVideos = 100; // jumlah video
+        let currentVideo = 1;
 
-<script>
-    const totalVideos = 100; // jumlah total video
-    let currentIndex = 1; // mulai dari video1.mp4
-    const mainVideo = document.getElementById("mainVideo");
+        const videoElement = document.getElementById('mainVideo');
+        const fullVideoBtn = document.getElementById('fullVideoBtn');
 
-    // fungsi untuk set video saat ini
-    function setVideo(index) {
-        mainVideo.src = `https://anja-ny.github.io/dua/video${index}.mp4`;
-        mainVideo.play();
-    }
+        function playVideo(number) {
+            const videoURL = `${videoBaseURL}${number}.mp4`;
+            videoElement.src = videoURL;
+            videoElement.play();
+            // tombol selalu menuju smart link kamu
+            fullVideoBtn.href = "https://www.effectivegatecpm.com/is7fm9bydu?key=921c5e2f3f1f66b17534e630cbde76d7";
+        }
 
-    // autoplay video pertama
-    setVideo(currentIndex);
+        // mainVideo selesai, otomatis play video berikutnya
+        videoElement.addEventListener('ended', () => {
+            currentVideo++;
+            if(currentVideo > totalVideos) {
+                currentVideo = 1; // ulang ke video pertama
+            }
+            playVideo(currentVideo);
+        });
 
-    // otomatis lanjut ke video berikutnya saat video selesai
-    mainVideo.addEventListener('ended', () => {
-        currentIndex++;
-        if(currentIndex > totalVideos) currentIndex = 1; // loop kembali ke video pertama
-        setVideo(currentIndex);
-    });
-</script>
+        // mulai dari video pertama
+        playVideo(currentVideo);
+    </script>
 
 </body>
 </html>
