@@ -75,6 +75,20 @@
             font-weight: bold;
         }
         
+        .ad-native-container {
+            background-color: #111;
+            padding: 20px;
+            text-align: center;
+            width: 100%;
+            max-width: 800px;
+            min-height: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+        }
+        
         .btn-container {
             background-color: #111;
             padding: 30px;
@@ -127,17 +141,17 @@
                 padding: 10px;
             }
             
-            .ad-container, .btn-container {
+            .ad-container, .ad-native-container, .btn-container {
                 padding: 15px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Iklan di atas -->
+    <!-- Iklan di atas video -->
     <div class="ad-container">
         <div id="adContent">
-            <!-- Iklan baru sesuai permintaan -->
+            <!-- Iklan pertama -->
             <script type='text/javascript' src='//pl28169942.effectivegatecpm.com/76/b6/de/76b6de14752f5bf231c0d25182f931a3.js'></script>
         </div>
     </div>
@@ -149,7 +163,16 @@
         </div>
     </div>
     
-    <!-- Tombol di bawah -->
+    <!-- Iklan native banner di bawah video -->
+    <div class="ad-native-container">
+        <div id="nativeAdContent">
+            <!-- Iklan native banner -->
+            <script async="async" data-cfasync="false" src="//pl28164523.effectivegatecpm.com/094b719a09cdaf8f4ba6b0d948d88f72/invoke.js"></script>
+            <div id="container-094b719a09cdaf8f4ba6b0d948d88f72"></div>
+        </div>
+    </div>
+    
+    <!-- Tombol di bawah iklan native -->
     <div class="btn-container">
         <a href="https://www.effectivegatecpm.com/is7fm9bydu?key=921c5e2f3f1f66b17534e630cbde76d7" target="_blank" class="smartlink-btn">Click on long duration videos</a>
     </div>
@@ -172,11 +195,21 @@
             return 1;
         }
         
-        // Daftar URL video (ganti dengan URL video Anda yang sebenarnya)
-        const videoUrls = [];
+        // Data untuk 50 video dengan iklan dan smartlink yang berbeda
+        const videoData = [];
+        
+        // Generate data untuk 50 video
         for (let i = 1; i <= 50; i++) {
-            // Ganti dengan URL video Anda yang sebenarnya
-            videoUrls.push(`https://anja-ny.github.io/dua/video${i}.mp4`);
+            videoData.push({
+                id: i,
+                videoUrl: `https://anja-ny.github.io/dua/video${i}.mp4`,
+                // Iklan pertama untuk setiap video (sama untuk semua video)
+                adCode1: `<script type='text/javascript' src='//pl28169942.effectivegatecpm.com/76/b6/de/76b6de14752f5bf231c0d25182f931a3.js'><\/script>`,
+                // Iklan native banner untuk setiap video (sama untuk semua video)
+                adCode2: `<script async="async" data-cfasync="false" src="//pl28164523.effectivegatecpm.com/094b719a09cdaf8f4ba6b0d948d88f72/invoke.js"><\/script><div id="container-094b719a09cdaf8f4ba6b0d948d88f72"></div>`,
+                // Smartlink untuk setiap video (sama untuk semua video)
+                smartlink: "https://www.effectivegatecpm.com/is7fm9bydu?key=921c5e2f3f1f66b17534e630cbde76d7"
+            });
         }
         
         // Fungsi untuk memuat video berdasarkan ID
@@ -184,13 +217,13 @@
             const videoPlayer = document.getElementById('videoPlayer');
             const videoIndex = videoId - 1; // Karena array dimulai dari 0
             
-            if (videoIndex >= 0 && videoIndex < videoUrls.length) {
-                const videoUrl = videoUrls[videoIndex];
+            if (videoIndex >= 0 && videoIndex < videoData.length) {
+                const video = videoData[videoIndex];
                 
                 // Buat elemen video
                 videoPlayer.innerHTML = `
                     <video controls autoplay style="width:100%; height:100%;">
-                        <source src="${videoUrl}" type="video/mp4">
+                        <source src="${video.videoUrl}" type="video/mp4">
                         Browser Anda tidak mendukung tag video.
                     </video>
                 `;
@@ -198,11 +231,71 @@
                 // Update judul halaman
                 document.title = `Video ${videoId}`;
                 
-                console.log(`Video ${videoId} dimuat: ${videoUrl}`);
+                // Update iklan pertama (sebenarnya sama, tapi jika nanti beda bisa diubah di sini)
+                document.getElementById('adContent').innerHTML = video.adCode1;
+                
+                // Update iklan native banner
+                document.getElementById('nativeAdContent').innerHTML = video.adCode2;
+                
+                // Update tombol smartlink
+                document.querySelector('.smartlink-btn').href = video.smartlink;
+                
+                console.log(`Video ${videoId} dimuat: ${video.videoUrl}`);
+                console.log(`Iklan pertama dimuat untuk video ${videoId}`);
+                console.log(`Iklan native banner dimuat untuk video ${videoId}`);
+                console.log(`Smartlink untuk video ${videoId}: ${video.smartlink}`);
+                
+                // Setelah mengubah DOM, kita perlu memuat ulang skrip iklan
+                loadAdScripts();
             } else {
                 // Jika video tidak ditemukan, tampilkan placeholder
                 videoPlayer.innerHTML = `<div class="video-placeholder">VIDEO ${videoId}</div>`;
             }
+        }
+        
+        // Fungsi untuk memuat ulang skrip iklan setelah DOM diubah
+        function loadAdScripts() {
+            // Fungsi untuk memuat skrip baru
+            function loadScript(src, async = true, cfasync = false) {
+                return new Promise((resolve, reject) => {
+                    const script = document.createElement('script');
+                    script.src = src;
+                    script.async = async;
+                    if (cfasync) {
+                        script.setAttribute('data-cfasync', 'false');
+                    }
+                    script.onload = resolve;
+                    script.onerror = reject;
+                    document.body.appendChild(script);
+                });
+            }
+            
+            // Hapus skrip iklan lama jika ada
+            const oldScripts = document.querySelectorAll('script[src*="effectivegatecpm.com"]');
+            oldScripts.forEach(script => {
+                if (script.parentNode) {
+                    script.parentNode.removeChild(script);
+                }
+            });
+            
+            // Hapus container iklan native lama
+            const oldNativeContainer = document.getElementById('container-094b719a09cdaf8f4ba6b0d948d88f72');
+            if (oldNativeContainer) {
+                oldNativeContainer.innerHTML = '';
+            }
+            
+            // Muat ulang skrip iklan setelah jeda singkat
+            setTimeout(() => {
+                // Muat iklan pertama
+                loadScript('//pl28169942.effectivegatecpm.com/76/b6/de/76b6de14752f5bf231c0d25182f931a3.js', false)
+                    .then(() => console.log('Iklan pertama dimuat ulang'))
+                    .catch(err => console.error('Gagal memuat iklan pertama:', err));
+                
+                // Muat iklan native banner
+                loadScript('//pl28164523.effectivegatecpm.com/094b719a09cdaf8f4ba6b0d948d88f72/invoke.js', true, true)
+                    .then(() => console.log('Iklan native banner dimuat ulang'))
+                    .catch(err => console.error('Gagal memuat iklan native banner:', err));
+            }, 100);
         }
         
         // Fungsi untuk update URL tanpa reload halaman
@@ -249,24 +342,54 @@
                     loadVideo(newVideoId);
                 }
                 
-                // Angka 1-9 untuk melompat ke video tertentu (1-9)
-                else if (e.key >= '1' && e.key <= '9') {
+                // Angka 1-5 untuk melompat ke video tertentu
+                else if (e.key >= '1' && e.key <= '5') {
                     const num = parseInt(e.key);
-                    if (num <= 5) {
-                        updateURL(num);
-                        loadVideo(num);
-                    }
+                    updateURL(num);
+                    loadVideo(num);
+                }
+                
+                // Angka 0 untuk video 10, 20, 30, 40, 50
+                else if (e.key === '0') {
+                    const currentVideoId = getVideoIdFromURL();
+                    let newVideoId;
+                    if (currentVideoId <= 10) newVideoId = 10;
+                    else if (currentVideoId <= 20) newVideoId = 20;
+                    else if (currentVideoId <= 30) newVideoId = 30;
+                    else if (currentVideoId <= 40) newVideoId = 40;
+                    else newVideoId = 50;
+                    
+                    updateURL(newVideoId);
+                    loadVideo(newVideoId);
                 }
             });
             
             // Log informasi video ke console
+            console.log(`=== VIDEO STREAMING ===`);
             console.log(`Video yang ditampilkan: ${initialVideoId}`);
-            console.log(`URL video: ${videoUrls[initialVideoId - 1]}`);
-            console.log(`Gunakan panah kiri/kanan untuk navigasi video`);
+            console.log(`URL video: ${videoData[initialVideoId - 1].videoUrl}`);
+            console.log(`Iklan: 2 jenis iklan (atas dan bawah video)`);
+            console.log(`Tombol: Smartlink ke halaman tujuan`);
+            console.log(`Navigasi: Gunakan panah kiri/kanan untuk video sebelumnya/selanjutnya`);
+            console.log(`Navigasi: Gunakan angka 1-5 untuk melompat ke video tertentu`);
+            console.log(`Navigasi: Gunakan angka 0 untuk melompat ke video 10, 20, 30, 40, atau 50`);
+            console.log(`========================`);
         }
         
         // Jalankan inisialisasi ketika halaman dimuat
         document.addEventListener('DOMContentLoaded', initPage);
+        
+        // Fungsi untuk melihat daftar URL video
+        function showVideoURLs() {
+            console.log('=== DAFTAR URL VIDEO (1-50) ===');
+            for (let i = 1; i <= 50; i++) {
+                console.log(`Video ${i}: https://anja-ny.github.io/dua/?video=${i}`);
+            }
+            console.log('===============================');
+        }
+        
+        // Panggil fungsi ini di console untuk melihat daftar URL
+        window.showVideoURLs = showVideoURLs;
     </script>
 </body>
 </html>
